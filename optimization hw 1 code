@@ -1,0 +1,204 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMd4skjtm3Wp2BUkekRFNjX",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/YuelianLi/Math-152/blob/main/optimization%20hw%201%20code\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from re import X\n",
+        "import numpy as np\n",
+        "\n",
+        "def f(x):\n",
+        "    return x * np.sin(4 * x)\n",
+        "\n",
+        "def Algorithm_A(input_type, f, epsilon, a, b):\n",
+        "    x = 0\n",
+        "\n",
+        "    if input_type == \"min\":\n",
+        "        while (b - a) > epsilon:\n",
+        "            interval_2 = np.arange(a, b, (b - a) / 4)\n",
+        "            interval_2 = np.append(interval_2, b)\n",
+        "            minimum_A = np.min(f(interval_2[1:4]))\n",
+        "            minimizer_A = np.argmin(f(interval_2[1:4]))\n",
+        "            a = interval_2[minimizer_A]\n",
+        "            b = interval_2[minimizer_A + 2]\n",
+        "            x = x + 3\n",
+        "\n",
+        "    elif input_type == \"max\":\n",
+        "        while (b - a) > epsilon:\n",
+        "            interval_2 = np.arange(a, b, (b - a) / 4)\n",
+        "            interval_2 = np.append(interval_2, b)\n",
+        "            maximum_A = np.max(f(interval_2[1:4]))\n",
+        "            maximizer_A = np.argmax(f(interval_2[1:4]))\n",
+        "            a = interval_2[maximizer_A]\n",
+        "            b = interval_2[maximizer_A + 2]\n",
+        "            x = x + 3\n",
+        "\n",
+        "  optimizer_A=(a+b)/2\n",
+        "  return optimizer_A, f(optimizer_A), x\n",
+        "Algorithm_A(\"min\", f, 0.01, 7/8*np. pi, 3)\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 144
+        },
+        "id": "HAh8asiw5trt",
+        "outputId": "1b1a3d65-423d-4572-f2f2-3af64817df96"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "IndentationError",
+          "evalue": "ignored",
+          "traceback": [
+            "\u001b[0;36m  File \u001b[0;32m\"<tokenize>\"\u001b[0;36m, line \u001b[0;32m30\u001b[0m\n\u001b[0;31m    optimizer_A=(a+b)/2\u001b[0m\n\u001b[0m    ^\u001b[0m\n\u001b[0;31mIndentationError\u001b[0m\u001b[0;31m:\u001b[0m unindent does not match any outer indentation level\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "\n",
+        "def f(x):\n",
+        "    return x * np.sin(4 * x) #define f(x) in python\n",
+        "\n",
+        "def Algorithm_A(input_type, f, epsilon, a, b): #input_type includes min and max, epsilon is the tolerance, small enough\n",
+        "    x = 0\n",
+        "\n",
+        "    if input_type == \"min\":\n",
+        "        while (b - a) > epsilon:\n",
+        "            interval_2 = np.arange(a, b, (b - a) / 4)       # divides the current interval [a, b] into 4 equal subintervals\n",
+        "            interval_2 = np.concatenate([interval_2, [b]])  # concatenate and assign back to interval_2, ensure the boundary\n",
+        "            minimum_A = np.min(f(interval_2[1:4]))          # compute min in each subinterval\n",
+        "            minimizer_A = np.argmin(f(interval_2[1:4]))     # minimizer_A is the index of min value, and minimum_A is the value of function\n",
+        "            a = interval_2[minimizer_A]\n",
+        "            b = interval_2[minimizer_A + 2]                 # get closer to the minimum value\n",
+        "            x = x + 3                                       # iterations for the loop\n",
+        "\n",
+        "    elif input_type == \"max\":\n",
+        "        while (b - a) > epsilon:\n",
+        "            interval_2 = np.arange(a, b, (b - a) / 4)       # divides the current interval [a, b] into 4 equal subintervals\n",
+        "            interval_2 = np.concatenate([interval_2, [b]])  # Concatenate and assign back to interval_2, ensure the boundary\n",
+        "            maximum_A = np.max(f(interval_2[1:4]))          # compute max in each subinterval\n",
+        "            maximizer_A = np.argmax(f(interval_2[1:4]))     # minimizer_A is the index of min value, and minimum_A is the value of function\n",
+        "            a = interval_2[maximizer_A]\n",
+        "            b = interval_2[maximizer_A + 2]                 # get closer to the minimum value\n",
+        "            x = x + 3                                       # iterations for the loop\n",
+        "\n",
+        "    optimizer_A = (a + b) / 2\n",
+        "    return optimizer_A, f(optimizer_A), x\n",
+        "\n",
+        "result = Algorithm_A(\"min\", f, 0.01, 7/8 * np.pi, 3)       # in this way, we find the local min in the interval [7/8 * np.pi, 3]\n",
+        "print(\"optimal point:\", result[0])\n",
+        "print(\"function value at optimal point:\", result[1])       # then plug it back to the function to get the function value\n",
+        "print(\"number of iterations:\", result[2])\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "PiOV7j_n778W",
+        "outputId": "baf01fd6-fa59-45cf-9f96-e76ad982763a"
+      },
+      "execution_count": 34,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "optimal point: 2.7724347995262817\n",
+            "function value at optimal point: -2.7601522475718583\n",
+            "number of iterations: 15\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "\n",
+        "def f(x):\n",
+        "    return x * np.sin(4 * x)\n",
+        "\n",
+        "def Algorithm_A(input_type, f, epsilon, a, b):\n",
+        "    x = 0  # Counter for iterations\n",
+        "\n",
+        "    if input_type == \"min\":\n",
+        "        while (b - a) > epsilon:\n",
+        "            interval_2 = np.arange(a, b, (b - a) / 4)\n",
+        "            interval_2 = np.append(interval_2, b)\n",
+        "            minimizer_A = np.argmin(f(interval_2[1:4]))\n",
+        "            minimum_A = np.min(f(interval_2[1:4]))\n",
+        "            a = interval_2[minimizer_A]\n",
+        "            b = interval_2[minimizer_A + 2]\n",
+        "            x = x + 3\n",
+        "\n",
+        "    elif input_type == \"max\":\n",
+        "        while (b - a) > epsilon:\n",
+        "            interval_2 = np.arange(a, b, (b - a) / 4)\n",
+        "            interval_2 = np.append(interval_2, b)\n",
+        "            maximizer_A = np.argmax(f(interval_2[1:4]))\n",
+        "            maximum_A = np.max(f(interval_2[1:4]))\n",
+        "            a = interval_2[maximizer_A]\n",
+        "            b = interval_2[maximizer_A + 2]\n",
+        "            x = x + 3\n",
+        "\n",
+        "    optimal_point = (a + b) / 2\n",
+        "    return optimal_point, f(optimal_point), x\n",
+        "\n",
+        "result = Algorithm_A(\"min\", f, 0.01, 7/8 * np.pi, 3)\n",
+        "print(\"Optimal Point:\", result[0])\n",
+        "print(\"Function Value at Optimal Point:\", result[1])\n",
+        "print(\"Number of Iterations:\", result[2])\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "RC1wD0aSCw-s",
+        "outputId": "c2b14b0c-9bbf-4998-fc10-0eb816c328c5"
+      },
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Optimal Point: 2.7724347995262817\n",
+            "Function Value at Optimal Point: -2.7601522475718583\n",
+            "Number of Iterations: 15\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
